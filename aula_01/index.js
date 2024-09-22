@@ -7,33 +7,19 @@ const app = express();
 app.set("view engine", "ejs");
 
 // CRIANDO A ROTA PRINCIPAL
-app.get("/", (req, res) => {
+app.get("/", function(req, res){
   // Será renderizada a página index.ejs que está na pasta 'views'
-  res.render("index");
-});
+  res.render("index")
+})
 
 // ROTA PERFIL
-app.get("/perfil", (req, res) => {
-  res.render("perfil");
-});
-
-// ROTA DE VÍDEOS
-app.get("/videos", (req, res) => {
-  res.render("videos");
-});
-
-// ROTA DE PRODUTOS
-app.get("/produtos/:produto?", (req, res) => {
-  const listaProdutos = ["Computador", "Celular", "Tablet", "Notebook"];
-  const produto = req.params.produto;
-  res.render("produtos", {
-    // Enviando a variável para a página
-    // Será chamado na página
-    produto: produto, // Variável que está na index (req.params)
-    listaProdutos: listaProdutos,
-    // Na pagina produtos.ejs haverá uma testagem de condição
+app.get("/perfil/:nome?", (req, res) => {
+  const nome = req.params.nome;
+  res.render("perfil", {
+    nome: nome
   });
 });
+
 //Rota de pedidos
 app.get("/pedidos", (req, res) => {
   //Array de objetos com os pedidos
@@ -42,15 +28,35 @@ app.get("/pedidos", (req, res) => {
     { produto: "Computador", valor: 4000 },
     { produto: "Tablet", valor: 2000 },
     { produto: "Notebook", valor: 3000 },
-  ];
+  ]
   res.render(
     "pedidos",
     //Enviando o array de objetos para a página
     {
-      pedidos: pedidos,
-    }
-  );
+      pedidos: pedidos
+    });
 });
+// ROTA DE VÍDEOS
+app.get("/videos/:playlist?/:video?", (req, res) => {
+  const playlist = req.params.playlist;
+  const video = req.params.video;
+  res.render("videos", {
+    playlist: playlist,
+    video:video
+  });
+});
+
+// ROTA DE PRODUTOS
+app.get("/produtos/:produto?",(req,res) => {
+    const listaProdutos = ['Computador','Celular','Tablet','Notebook'];
+    const produto = req.params.produto
+    res.render("produtos",{
+       
+        produto:produto,
+        listaProdutos:listaProdutos
+        
+    })
+})
 // Iniciando o servidor na porta 8080
 const port = 8080;
 app.listen(port, (error) => {
